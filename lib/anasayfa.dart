@@ -35,87 +35,111 @@ class _AnaSayfaState extends State<AnaSayfa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.attach_money),
+      appBar: _buildAppBar(),
+      body: _buildBody()
+    );
+  }
+
+  AppBar _buildAppBar(){
+    return AppBar(
+      leading: IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.attach_money),
+        color: Colors.white,
+      ),
+      backgroundColor: Colors.blue,
+      title: Text(
+        "Kur Dönüştürücü",
+        style: TextStyle(
           color: Colors.white,
-        ),
-        backgroundColor: Colors.blue,
-        title: Text(
-          "Kur Dönüştürücü",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          fontWeight: FontWeight.bold,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    )),
-                    onChanged: (String yeniDeger) {
-                      _hesapla();
-                    },
-                  ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                DropdownButton<String>(
-                  value: _secilenKur,
-                  icon: Icon(Icons.arrow_downward),
-                  underline: SizedBox(),
-                  items: _oranlar.keys.map((String kur) {
-                    return DropdownMenuItem(
-                      value: kur,
-                      child: Text(kur),
-                    );
-                  }).toList(),
-                  onChanged: (String? yeniDeger) {
-                    if (yeniDeger != null) {
-                      _secilenKur = yeniDeger;
-                      _hesapla();
-                    }
-                  },
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              "${_sonuc.toStringAsFixed(2)} ₺",
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Container(
-              height: 2,
-              color: Colors.black,
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _oranlar.keys.length,
-                itemBuilder: _buildListItem,
-              ),
-            ),
-          ],
+    );
+  }
+
+  Widget _buildBody(){
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          _buildExchangeRow(),
+          SizedBox(
+            height: 16,
+          ),
+          _buildSonucText(),
+          SizedBox(
+            height: 16,
+          ),
+          _buildAyiriciCizgi(),
+          SizedBox(
+            height: 16,
+          ),
+          _buildKurList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExchangeRow(){
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: _controller,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                )),
+            onChanged: (String yeniDeger) {
+              _hesapla();
+            },
+          ),
         ),
+        SizedBox(
+          width: 16,
+        ),
+        DropdownButton<String>(
+          value: _secilenKur,
+          icon: Icon(Icons.arrow_downward),
+          underline: SizedBox(),
+          items: _oranlar.keys.map((String kur) {
+            return DropdownMenuItem(
+              value: kur,
+              child: Text(kur),
+            );
+          }).toList(),
+          onChanged: (String? yeniDeger) {
+            if (yeniDeger != null) {
+              _secilenKur = yeniDeger;
+              _hesapla();
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSonucText(){
+    return Text(
+      "${_sonuc.toStringAsFixed(2)} ₺",
+      style: TextStyle(fontSize: 24),
+    );
+  }
+
+  Widget _buildAyiriciCizgi(){
+    return Container(
+      height: 2,
+      color: Colors.black,
+    );
+  }
+
+  Widget _buildKurList(){
+    return Expanded(
+      child: ListView.builder(
+        itemCount: _oranlar.keys.length,
+        itemBuilder: _buildListItem,
       ),
     );
   }

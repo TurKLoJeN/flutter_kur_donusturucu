@@ -36,7 +36,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _buildBody()
+      body: _oranlar.isNotEmpty ? _buildBody():Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -149,7 +149,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
       title:
           Text(_oranlar.keys.toList()[index], style: TextStyle(fontSize: 19)),
       trailing: Text(
-        _oranlar.values.toList()[index].toStringAsFixed(2),
+        "${_oranlar.values.toList()[index].toStringAsFixed(2)} ₺",
         style: TextStyle(fontSize: 15),
       ),
     );
@@ -167,6 +167,7 @@ class _AnaSayfaState extends State<AnaSayfa> {
   }
 
   void _verileriInternettenCek() async {
+    
     Uri uri = Uri.parse(_baseUrl + _apiKey);
     http.Response response = await http.get(uri);
 
